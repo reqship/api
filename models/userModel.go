@@ -81,7 +81,15 @@ func (u *LoginUser) Login() (err error) {
 
 	var users []User
 
-	count, err := db.NewSelect().Model(&users).Where("username = ?", u.Username).ScanAndCount(ctx)
+	var count int
+
+	if _, err = mail.ParseAddress(u.Username); err != nil {
+		count, err = db.NewSelect().Model(&users).Where("username = ?", u.Username).ScanAndCount(ctx)
+
+	} else {
+		count, err = db.NewSelect().Model(&users).Where("email = ?", u.Username).ScanAndCount(ctx)
+	}
+
 	if err != nil {
 		return
 	}
