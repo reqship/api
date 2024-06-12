@@ -26,6 +26,7 @@ func CreateBusiness(ctx *gin.Context) {
 func GetAllBusinesses(ctx *gin.Context) {
 	page := ctx.DefaultQuery("page", "1")
 	count := ctx.DefaultQuery("count", "20")
+	searchQuery := ctx.DefaultQuery("searchQuery", "")
 
 	page_int, err := strconv.Atoi(page)
 
@@ -39,7 +40,7 @@ func GetAllBusinesses(ctx *gin.Context) {
 		http.Bad(ctx, err.Error())
 		return
 	}
-	businesses, err := models.GetPaginatedBusinesses(page_int, count_int)
+	businesses, err := models.GetPaginatedBusinesses(page_int, count_int, searchQuery)
 	if err != nil {
 		http.Bad(ctx, err.Error())
 		return
