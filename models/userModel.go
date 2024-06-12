@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"errors"
+	"net/mail"
 	"reqship-api/helpers/auth"
 	"reqship-api/helpers/db"
 
@@ -23,6 +24,22 @@ func (u *User) SignUp() (err error) {
 	ctx := context.Background()
 	defer db.Close()
 
+	if u.Email == "" || u.Password == "" || u.Username == "" {
+		return errors.New("invalid data provided")
+	}
+
+	if _, err = mail.ParseAddress(u.Email); err != nil {
+		return errors.New("invalid email address")
+	}
+
+	if len(u.Username) < 5 {
+		return errors.New("username must be at least 5 characters")
+	}
+
+	if len(u.Password) < 8 {
+		return errors.New("password must be at least 8 characters")
+	}
+
 	users := []User{}
 	count, err := db.NewSelect().Model(&users).Where("username = ?", u.Username).ScanAndCount(ctx)
 	if err != nil {
@@ -30,6 +47,15 @@ func (u *User) SignUp() (err error) {
 	}
 	if count > 0 {
 		return errors.New("account with username already exists")
+	}
+
+	users = []User{}
+	count, err = db.NewSelect().Model(&users).Where("email = ?", u.Email).ScanAndCount(ctx)
+	if err != nil {
+		return
+	}
+	if count > 0 {
+		return errors.New("account with email already exists")
 	}
 
 	hashed_password, err := auth.Hash(u.Password)
