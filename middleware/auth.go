@@ -17,7 +17,7 @@ func CheckUserAccess(ctx *gin.Context) {
 		http.Forbidden(ctx, "Invalid token")
 		ctx.Abort()
 	} else {
-		ctx.Set("client_id", username)
+		ctx.Set("username", username)
 		ctx.Next()
 	}
 }

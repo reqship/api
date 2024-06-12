@@ -13,6 +13,8 @@ func Init(router *gin.Engine) {
 	router_v1 := router.Group("api/v1")
 	{
 		v1.AuthRoutes(router_v1)
+		v1.BusinessRoutes(router_v1)
+		v1.ItemsRoutes(router_v1)
 	}
 
 	router.Run(":8080")

@@ -13,7 +13,6 @@ import (
 var tables []any = []any{
 	(*models.User)(nil),
 	(*models.Business)(nil),
-	(*models.BusinessUser)(nil),
 	(*models.Item)(nil),
 	(*models.Order)(nil),
 	(*models.OrderItem)(nil),

@@ -1,6 +1,11 @@
 package models
 
-import "github.com/uptrace/bun"
+import (
+	"context"
+	"reqship-api/helpers/db"
+
+	"github.com/uptrace/bun"
+)
 
 type Item struct {
 	bun.BaseModel `bun:"table:items,alias:items"`
@@ -11,4 +16,13 @@ type Item struct {
 	Price       float32
 	Description string
 	ImageUrl    string
+}
+
+func (i *Item) Create() (err error) {
+	db := db.Init()
+	ctx := context.Background()
+	defer db.Close()
+
+	_, err = db.NewInsert().Model(i).Exec(ctx)
+	return
 }
