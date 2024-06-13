@@ -17,6 +17,7 @@ type Business struct {
 	Name        string
 	Description string
 	UserID      int64
+	ImageUrl    string
 }
 
 func GetPaginatedBusinesses(page int, count int, query string) (res gin.H, err error) {
@@ -62,6 +63,24 @@ func (b *Business) Create() (business *Business, err error) {
 	defer db.Close()
 
 	_, err = db.NewInsert().Model(b).Exec(ctx)
+	return
+}
+
+func (b *Business) Update() (err error) {
+	db := db.Init()
+	ctx := context.Background()
+	defer db.Close()
+
+	_, err = db.NewUpdate().Model(b).WherePK().Exec(ctx)
+	return
+}
+
+func (b *Business) Delete() (err error) {
+	db := db.Init()
+	ctx := context.Background()
+	defer db.Close()
+
+	_, err = db.NewDelete().Model(b).WherePK().Exec(ctx)
 	return
 }
 

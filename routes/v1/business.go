@@ -12,5 +12,7 @@ func BusinessRoutes(router *gin.RouterGroup) {
 	{
 		api.GET("", services.GetAllBusinesses)
 		api.POST("", middleware.GetUserDetails, services.CreateBusiness)
+		api.PUT(":business_id", middleware.GetUserDetails, middleware.GetBusinessDetails, services.UpdateBusiness)
+		api.DELETE(":business_id", middleware.GetUserDetails, middleware.GetBusinessDetails, services.DeleteBusiness)
 	}
 }
