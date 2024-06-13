@@ -130,3 +130,22 @@ func GetAllBusinesses(ctx *gin.Context) {
 	}
 	http.Ok(ctx, businesses, "Successfully grabbed all businesses")
 }
+
+func GetBusinessById(ctx *gin.Context) {
+	id := ctx.Param("business_id")
+
+	id_int, err := strconv.Atoi(id)
+
+	if err != nil {
+		http.Bad(ctx, err.Error())
+		return
+	}
+	business, err := models.GetBusinessByID(int64(id_int))
+
+	if err != nil {
+		http.Bad(ctx, err.Error())
+		return
+	}
+
+	http.Ok(ctx, business, "successfully retrieved business")
+}

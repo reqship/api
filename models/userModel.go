@@ -100,6 +100,15 @@ func (u *LoginUser) Login() (err error) {
 	return
 }
 
+func (u *User) DeleteUser() (err error) {
+	db := db.Init()
+	defer db.Close()
+	ctx := context.Background()
+
+	_, err = db.NewDelete().Model(u).WherePK().Exec(ctx)
+	return
+}
+
 type UserLoginResponse struct {
 	Token string
 }

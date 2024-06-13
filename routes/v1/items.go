@@ -10,7 +10,8 @@ import (
 func ItemsRoutes(router *gin.RouterGroup) {
 	api := router.Group("items")
 	{
+		api.GET(":id", services.GetItemById)
 		api.POST("", middleware.GetBusinessDetails, services.CreateItem)
-		api.GET(":business_id", services.GetItemsByBusiness)
+
 	}
 }

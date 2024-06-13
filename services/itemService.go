@@ -52,18 +52,32 @@ func GetItemsByBusiness(ctx *gin.Context) {
 		return
 	}
 
-	business, err := models.GetBusinessByID(int64(business_id))
+	items, err := models.GetItemsByBusinessId(int64(business_id))
 
 	if err != nil {
 		http.Bad(ctx, err.Error())
 		return
 	}
 
-	items, err := business.GetItems()
-
-	if err != nil {
-		http.Bad(ctx, err.Error())
-		return
-	}
 	http.Ok(ctx, items, "successfully retrieved items")
+}
+
+func GetItemById(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	id_int, err := strconv.Atoi(id)
+
+	if err != nil {
+		http.Bad(ctx, err.Error())
+		return
+	}
+
+	item, err := models.GetItemById(int64(id_int))
+
+	if err != nil {
+		http.Bad(ctx, err.Error())
+		return
+	}
+
+	http.Ok(ctx, item, "successfully retrieved item")
 }

@@ -26,3 +26,22 @@ func (i *Item) Create() (err error) {
 	_, err = db.NewInsert().Model(i).Exec(ctx)
 	return
 }
+
+func GetItemById(id int64) (item Item, err error) {
+	db := db.Init()
+	ctx := context.Background()
+	defer db.Close()
+	items := []Item{}
+	err = db.NewSelect().Model(&items).Where("id = ?", id).Scan(ctx)
+	item = items[0]
+	return
+}
+
+func GetItemsByBusinessId(businessId int64) (items []Item, err error) {
+	db := db.Init()
+	ctx := context.Background()
+	defer db.Close()
+
+	err = db.NewSelect().Model(&items).Where("business_id = ?", businessId).Scan(ctx)
+	return
+}

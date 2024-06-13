@@ -85,12 +85,5 @@ func (b *Business) Delete() (err error) {
 }
 
 func (b *Business) GetItems() (items []Item, err error) {
-	db := db.Init()
-	ctx := context.Background()
-	defer db.Close()
-
-	items = []Item{}
-
-	err = db.NewSelect().Model(&items).Where("business_id = ?", b.ID).Scan(ctx)
-	return
+	return GetItemsByBusinessId(b.ID)
 }
